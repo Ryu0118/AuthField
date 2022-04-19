@@ -72,13 +72,6 @@ open class AuthField : UIView {
             cards.append(card)
         }
     }
-    private func observeBounds() {
-        boundsObserver = self.observe(\.bounds, options: .new, changeHandler: { authField, keyValueObservation in
-            guard let bounds = keyValueObservation.newValue else { return }
-            
-            
-        })
-    }
     
 }
 

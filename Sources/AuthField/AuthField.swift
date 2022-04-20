@@ -63,6 +63,13 @@ open class AuthField : UIView {
         cards.first?.textField.becomeFirstResponder()
         return super.becomeFirstResponder()
     }
+    
+    public func reset() {
+        for card in cards {
+            card.textField.text = ""
+        }
+    }
+    
     //MARK: Private Methods
     private func setupView() {
         self.snp.makeConstraints { $0.height.equalTo(boxHeight + 10) }

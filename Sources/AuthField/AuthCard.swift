@@ -20,6 +20,11 @@ class AuthCard : UIView {
 
     let font: UIFont
     
+    var selectedBorderColor: UIColor = .systemBlue
+    var borderColor: UIColor = .lightGray
+    var borderWidth: CGFloat = 2
+    var selectedBorderWidth: CGFloat = 3
+    
     var pin: Int? {
         if let text = textField.text {
             return Int(text)
@@ -48,8 +53,8 @@ class AuthCard : UIView {
     init(font: UIFont) {
         self.font = font
         super.init(frame: .zero)
-        self.layer.borderWidth = 2
-        self.layer.borderColor = UIColor.lightGray.cgColor
+        self.layer.borderWidth = borderWidth
+        self.layer.borderColor = borderColor.cgColor
         self.layer.cornerRadius = 8
         setupView()
     }
@@ -58,6 +63,24 @@ class AuthCard : UIView {
     
     func delete() {
         textField.text = ""
+    }
+    
+    func setBorderColor(_ borderColor: UIColor) {
+        self.borderColor = borderColor
+        self.layer.borderColor = borderColor.cgColor
+    }
+    
+    func setSelectedBorderColor(_ color: UIColor) {
+        self.selectedBorderColor = color
+    }
+    
+    func setBorderWidth(_ width: CGFloat) {
+        self.layer.borderWidth = width
+        self.borderWidth = width
+    }
+    
+    func setSelectedBorderWidth(_ width: CGFloat) {
+        self.selectedBorderWidth = width
     }
     
     private func setupView() {
@@ -79,13 +102,13 @@ class AuthCard : UIView {
     }
 
     private func selected() {
-        self.layer.borderWidth = 3
-        self.layer.borderColor = UIColor.systemBlue.cgColor
+        self.layer.borderWidth = selectedBorderWidth
+        self.layer.borderColor = selectedBorderColor.cgColor
     }
     
     private func deselected() {
-        self.layer.borderWidth = 2
-        self.layer.borderColor = UIColor.lightGray.cgColor
+        self.layer.borderWidth = borderWidth
+        self.layer.borderColor = borderColor.cgColor
     }
 }
 

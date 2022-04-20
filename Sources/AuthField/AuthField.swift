@@ -5,11 +5,45 @@ import SnapKit
     @objc optional func endEditing(_ authField: AuthField, pinCode: Int)
 }
 
+public struct AuthFieldConfiguration {
+    let pinCount: Int
+    let font: UIFont
+    let spacing: CGFloat
+    let boxWidth: CGFloat
+    let boxHeight: CGFloat
+    let borderColor: UIColor
+    let selectedBorderColor: UIColor
+    let borderWidth: CGFloat
+    let selectedBorderWidth: CGFloat
+    
+    public init(
+        pinCount: Int,
+        font: UIFont = .systemFont(ofSize: 30),
+        spacing: CGFloat = CGFloat(17),
+        boxWidth: CGFloat = CGFloat(43),
+        boxHeight: CGFloat = CGFloat(55),
+        borderColor: UIColor = .gray,
+        selectedBorderColor: UIColor = .blue,
+        borderWidth: CGFloat = CGFloat(2),
+        selectedBorderWidth: CGFloat = CGFloat(3)
+    ) {
+        self.pinCount = pinCount
+        self.font = font
+        self.spacing = spacing
+        self.boxWidth = boxWidth
+        self.boxHeight = boxHeight
+        self.borderColor = borderColor
+        self.selectedBorderColor = selectedBorderColor
+        self.borderWidth = borderWidth
+        self.selectedBorderWidth = selectedBorderWidth
+    }
+}
+
 open class AuthField : UIView {
     
     //MARK: Static Properties
-    static let boxWidth = CGFloat(43)
-    static let boxHeight = CGFloat(55)
+    internal static var boxWidth = CGFloat(43)
+    internal static var boxHeight = CGFloat(55)
     
     //MARK: Public Properties
     public weak var delegate: AuthFieldDelegate?
@@ -27,29 +61,78 @@ open class AuthField : UIView {
     
     public var font = UIFont.systemFont(ofSize: 30) {
         didSet {
-            self.cards.removeAll()
-            self.stackView.removeAllArrangedSubviews()
-            self.subviews.forEach { $0.removeFromSuperview() }
-            setupView()
+            for card in cards {
+                card.textField.font = font
+            }
+        }
+    }
+    
+    public var spacing = CGFloat(16) {
+        didSet {
+            stackView.spacing = spacing
+        }
+    }
+    
+    public var borderColor: UIColor {
+        didSet {
+            for card in cards {
+                card.setBorderColor(borderColor)
+            }
+        }
+    }
+    
+    public var selectedBorderColor: UIColor {
+        didSet {
+            for card in cards {
+                card.setSelectedBorderColor(borderColor)
+            }
+        }
+    }
+    
+    public var selectedBorderWidth: CGFloat {
+        didSet {
+            for card in cards {
+                card.setSelectedBorderWidth(selectedBorderWidth)
+            }
+        }
+    }
+    
+    public var borderWidth: CGFloat {
+        didSet {
+            for card in cards {
+                card.setBorderWidth(borderWidth)
+            }
         }
     }
     
     //MARK: Internal Properties
     internal var cards = [AuthCard]()
+    internal let configuration: AuthFieldConfiguration
     
     //MARK: Private Properties
     private var boundsObserver: NSKeyValueObservation!
-    private let stackView: UIStackView = {
+    private lazy var stackView: UIStackView = {
         let stack = UIStackView()
         stack.axis = .horizontal
         stack.distribution = .fillProportionally
-        stack.spacing = 16
+        stack.spacing = spacing
         stack.alignment = .center
         return stack
     }()
     
-    public init(frame: CGRect = .zero, pinCount: Int) {
-        self.pinCount = pinCount
+    public init(frame: CGRect = .zero, configuration: AuthFieldConfiguration) {
+        self.configuration = configuration
+        self.font = configuration.font
+        self.pinCount = configuration.pinCount
+        self.spacing = configuration.spacing
+        self.borderColor = configuration.borderColor
+        self.selectedBorderColor = configuration.selectedBorderColor
+        self.borderWidth = configuration.borderWidth
+        self.selectedBorderWidth = configuration.selectedBorderWidth
+        
+        AuthField.boxWidth = configuration.boxWidth
+        AuthField.boxHeight = configuration.boxHeight
+        
         super.init(frame: frame)
         setupView()
     }
@@ -85,6 +168,10 @@ open class AuthField : UIView {
         for i in 0..<pinCount {
             let card = AuthCard(font: font)
             card.textField.isUserInteractionEnabled = i == 0
+            card.setBorderColor(borderColor)
+            card.setSelectedBorderColor(selectedBorderColor)
+            card.setBorderWidth(borderWidth)
+            card.setSelectedBorderWidth(selectedBorderWidth)
             card.tag = i
             card.delegate = self
             stackView.addArrangedSubview(card)

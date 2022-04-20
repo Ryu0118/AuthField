@@ -8,6 +8,7 @@ import SnapKit
 open class AuthField : UIView {
     //MARK: Public Properties
     public weak var delegate: AuthFieldDelegate?
+    
     public let pinCount: Int
     public var pin: Int {
         var pin = 0
@@ -65,8 +66,9 @@ open class AuthField : UIView {
     }
     
     public func reset() {
-        for card in cards {
-            card.textField.text = ""
+        for (i,card) in cards.enumerated() {
+            card.delete()
+            card.textField.isUserInteractionEnabled = i == 0
         }
     }
     

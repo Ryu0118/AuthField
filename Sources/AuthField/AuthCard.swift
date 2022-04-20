@@ -58,6 +58,10 @@ class AuthCard : UIView {
     
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
     
+    func delete() {
+        textField.text = ""
+    }
+    
     private func setupView() {
         textField.addTarget(self, action: #selector(editingChanged), for: .editingChanged)
         textField.addTarget(self, action: #selector(startEditing), for: .editingDidBegin)

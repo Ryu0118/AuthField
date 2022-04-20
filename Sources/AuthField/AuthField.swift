@@ -6,6 +6,11 @@ import SnapKit
 }
 
 open class AuthField : UIView {
+    
+    //MARK: Static Properties
+    static let boxWidth = CGFloat(43)
+    static let boxHeight = CGFloat(55)
+    
     //MARK: Public Properties
     public weak var delegate: AuthFieldDelegate?
     
@@ -30,8 +35,6 @@ open class AuthField : UIView {
     }
     
     //MARK: Internal Properties
-    internal let boxWidth = CGFloat(43)
-    internal let boxHeight = CGFloat(55)
     internal var cards = [AuthCard]()
     
     //MARK: Private Properties
@@ -74,7 +77,7 @@ open class AuthField : UIView {
     
     //MARK: Private Methods
     private func setupView() {
-        self.snp.makeConstraints { $0.height.equalTo(boxHeight + 10) }
+        self.snp.makeConstraints { $0.height.equalTo(AuthField.boxHeight + 10) }
         
         addSubview(stackView)
         stackView.snp.makeConstraints { $0.edges.equalToSuperview() }

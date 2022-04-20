@@ -17,9 +17,7 @@ protocol AuthCardDelegate : AnyObject {
 class AuthCard : UIView {
     
     weak var delegate: AuthCardDelegate?
-    
-    let width = CGFloat(43)
-    let height = CGFloat(55)
+
     let font: UIFont
     
     var pin: Int? {
@@ -70,13 +68,13 @@ class AuthCard : UIView {
         addSubview(textField)
         
         self.snp.makeConstraints {
-            $0.width.equalTo(width)
-            $0.height.equalTo(height)
+            $0.width.equalTo(AuthField.boxWidth)
+            $0.height.equalTo(AuthField.boxHeight)
         }
         textField.snp.makeConstraints {
             $0.centerX.centerY.equalToSuperview()
-            $0.width.equalTo(width * 0.9)
-            $0.height.equalTo(height * 0.9)
+            $0.width.equalTo(AuthField.boxWidth * 0.9)
+            $0.height.equalTo(AuthField.boxHeight * 0.9)
         }
     }
 

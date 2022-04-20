@@ -58,6 +58,11 @@ open class AuthField : UIView {
         return super.resignFirstResponder()
     }
     
+    @discardableResult
+    public override func becomeFirstResponder() -> Bool {
+        cards.first?.textField.becomeFirstResponder()
+        return super.becomeFirstResponder()
+    }
     //MARK: Private Methods
     private func setupView() {
         self.snp.makeConstraints { $0.height.equalTo(boxHeight + 10) }

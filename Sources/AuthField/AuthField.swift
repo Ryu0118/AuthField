@@ -17,7 +17,8 @@ public struct AuthFieldConfiguration {
     let selectedBorderColor: UIColor
     let borderWidth: CGFloat
     let selectedBorderWidth: CGFloat
-    let cornerRadius: CGFloat
+    let boxCornerRadius: CGFloat
+    let boxBackgroundColor: UIColor
     
     public init(
         pinCount: Int,
@@ -29,7 +30,8 @@ public struct AuthFieldConfiguration {
         selectedBorderColor: UIColor = .blue,
         borderWidth: CGFloat = CGFloat(2),
         selectedBorderWidth: CGFloat = CGFloat(3),
-        cornerRadius: CGFloat = CGFloat(8)
+        boxCornerRadius: CGFloat = CGFloat(8),
+        boxBackgroundColor: UIColor = .white
     ) {
         self.pinCount = pinCount
         self.font = font
@@ -40,7 +42,8 @@ public struct AuthFieldConfiguration {
         self.selectedBorderColor = selectedBorderColor
         self.borderWidth = borderWidth
         self.selectedBorderWidth = selectedBorderWidth
-        self.cornerRadius = cornerRadius
+        self.boxCornerRadius = boxCornerRadius
+        self.boxBackgroundColor = boxBackgroundColor
     }
 }
 
@@ -128,10 +131,20 @@ open class AuthField : UIView {
     /**
      Corner radius of text boxes
      */
-    public var cornerRadius: CGFloat {
+    public var boxCornerRadius: CGFloat {
         didSet {
             for card in cards {
-                card.layer.cornerRadius = cornerRadius
+                card.layer.cornerRadius = boxCornerRadius
+            }
+        }
+    }
+    /**
+     Background color of text boxs
+     */
+    public var boxBackgroundColor: UIColor {
+        didSet {
+            for card in cards {
+                card.backgroundColor = boxBackgroundColor
             }
         }
     }
@@ -161,7 +174,8 @@ open class AuthField : UIView {
         self.selectedBorderColor = configuration.selectedBorderColor
         self.borderWidth = configuration.borderWidth
         self.selectedBorderWidth = configuration.selectedBorderWidth
-        self.cornerRadius = configuration.cornerRadius
+        self.boxCornerRadius = configuration.boxCornerRadius
+        self.boxBackgroundColor = configuration.boxBackgroundColor
         
         AuthField.boxWidth = configuration.boxWidth
         AuthField.boxHeight = configuration.boxHeight

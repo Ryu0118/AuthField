@@ -36,7 +36,7 @@ class AuthCard : UIView {
     
     lazy var textField: AuthTextField = {
         let textField = AuthTextField(frame: .zero)
-        textField.backgroundColor = .white
+        textField.backgroundColor = .clear
         textField.keyboardType = .numberPad
         textField.font = font
         textField.textAlignment = .center

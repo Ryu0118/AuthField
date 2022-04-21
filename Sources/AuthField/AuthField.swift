@@ -57,13 +57,11 @@ open class AuthField : UIView {
     
     ///Inputed pin code value
     public var pin: Int {
-        var pin = 0
-        cards.compactMap { $0.pin }.reversed().enumerated().forEach { i, cardPin in
-            var multipled = 1
-            if i != 0 { multipled = (1...i).reduce(1) { prev, i -> Int in prev * 10 } }
-            pin += cardPin * multipled
+        var pin = ""
+        cards.compactMap { $0.pin }.forEach { cardPin in
+            pin += "\(cardPin)"
         }
-        return pin
+        return Int(pin)!
     }
     
     /**

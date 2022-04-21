@@ -17,6 +17,7 @@ public struct AuthFieldConfiguration {
     let selectedBorderColor: UIColor
     let borderWidth: CGFloat
     let selectedBorderWidth: CGFloat
+    let cornerRadius: CGFloat
     
     public init(
         pinCount: Int,
@@ -27,7 +28,8 @@ public struct AuthFieldConfiguration {
         borderColor: UIColor = .gray,
         selectedBorderColor: UIColor = .blue,
         borderWidth: CGFloat = CGFloat(2),
-        selectedBorderWidth: CGFloat = CGFloat(3)
+        selectedBorderWidth: CGFloat = CGFloat(3),
+        cornerRadius: CGFloat = CGFloat(8)
     ) {
         self.pinCount = pinCount
         self.font = font
@@ -38,6 +40,7 @@ public struct AuthFieldConfiguration {
         self.selectedBorderColor = selectedBorderColor
         self.borderWidth = borderWidth
         self.selectedBorderWidth = selectedBorderWidth
+        self.cornerRadius = cornerRadius
     }
 }
 
@@ -122,6 +125,16 @@ open class AuthField : UIView {
             }
         }
     }
+    /**
+     Corner radius of text boxes
+     */
+    public var cornerRadius: CGFloat {
+        didSet {
+            for card in cards {
+                card.layer.cornerRadius = cornerRadius
+            }
+        }
+    }
     
     //MARK: Internal Properties
     internal var cards = [AuthCard]()
@@ -148,6 +161,7 @@ open class AuthField : UIView {
         self.selectedBorderColor = configuration.selectedBorderColor
         self.borderWidth = configuration.borderWidth
         self.selectedBorderWidth = configuration.selectedBorderWidth
+        self.cornerRadius = configuration.cornerRadius
         
         AuthField.boxWidth = configuration.boxWidth
         AuthField.boxHeight = configuration.boxHeight

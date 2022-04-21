@@ -63,11 +63,25 @@ open class AuthField : UIView {
     
     ///Inputed pin code value
     public var pin: Int {
-        var pin = ""
-        cards.compactMap { $0.pin }.forEach { cardPin in
-            pin += "\(cardPin)"
+        get {
+            var pin = ""
+            cards.compactMap { $0.pin }.forEach { cardPin in
+                pin += "\(cardPin)"
+            }
+            return Int(pin) ?? 0
         }
-        return Int(pin)!
+        set(newPin) {
+            let pinArr = Array("\(newPin)")
+            let count = pinArr.count
+            zip(pinArr, cards).enumerated().forEach { i, data in
+                let (pinCode, card) = data
+                card.textField.text = "\(pinCode)"
+                if i == count - 1 {
+                    let lastCard = (i == pinCount - 1) ? card : cards[i + 1]
+                    lastCard.textField.isUserInteractionEnabled = true
+                }
+            }
+        }
     }
     
     /**

@@ -129,6 +129,10 @@ class AuthCard : UIView {
     
     func editingChanged() {
         if let count = textField.text?.count {
+            if (count > 0 && Int(textField.text ?? "") == nil)  {
+                textField.text?.removeAll()
+                return
+            }
             if count == 1 {
                 textField.resignFirstResponder()
                 delegate?.endEditing(self)

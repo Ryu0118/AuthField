@@ -2,9 +2,11 @@ import UIKit
 import SnapKit
 
 @objc public protocol AuthFieldDelegate {
+    ///Executed after all pin codes have been typed.
     @objc optional func endEditing(_ authField: AuthField, pinCode: Int)
 }
 
+/// Structures that form AuthField
 public struct AuthFieldConfiguration {
     let pinCount: Int
     let font: UIFont
@@ -46,9 +48,14 @@ open class AuthField : UIView {
     internal static var boxHeight = CGFloat(55)
     
     //MARK: Public Properties
+    
+    ///The object that acts as the delegate of the authField.
     public weak var delegate: AuthFieldDelegate?
     
+    ///Number of pin code digits
     public let pinCount: Int
+    
+    ///Inputed pin code value
     public var pin: Int {
         var pin = 0
         cards.compactMap { $0.pin }.reversed().enumerated().forEach { i, cardPin in
@@ -59,6 +66,9 @@ open class AuthField : UIView {
         return pin
     }
     
+    /**
+     The font of the pin code
+     */
     public var font = UIFont.systemFont(ofSize: 30) {
         didSet {
             for card in cards {
@@ -66,13 +76,17 @@ open class AuthField : UIView {
             }
         }
     }
-    
+    /**
+     The distance in points between the adjacent text boxes
+     */
     public var spacing = CGFloat(16) {
         didSet {
             stackView.spacing = spacing
         }
     }
-    
+    /**
+     Border color of unselected text boxes
+     */
     public var borderColor: UIColor {
         didSet {
             for card in cards {
@@ -80,7 +94,9 @@ open class AuthField : UIView {
             }
         }
     }
-    
+    /**
+     Border color of selected text boxes
+     */
     public var selectedBorderColor: UIColor {
         didSet {
             for card in cards {
@@ -88,7 +104,9 @@ open class AuthField : UIView {
             }
         }
     }
-    
+    /**
+     Border width of selected text boxes
+     */
     public var selectedBorderWidth: CGFloat {
         didSet {
             for card in cards {
@@ -96,7 +114,9 @@ open class AuthField : UIView {
             }
         }
     }
-    
+    /**
+     Border width of unselected text boxes
+     */
     public var borderWidth: CGFloat {
         didSet {
             for card in cards {
@@ -120,6 +140,7 @@ open class AuthField : UIView {
         return stack
     }()
     
+    //MARK: Initializer
     public init(frame: CGRect = .zero, configuration: AuthFieldConfiguration) {
         self.configuration = configuration
         self.font = configuration.font
@@ -151,6 +172,7 @@ open class AuthField : UIView {
         return super.becomeFirstResponder()
     }
     
+    ///Delete all pin codes that have been entered
     public func reset() {
         for (i,card) in cards.enumerated() {
             card.delete()

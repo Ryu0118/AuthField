@@ -61,7 +61,7 @@ open class AuthField : UIView {
     ///Number of pin code digits
     public let pinCount: Int
     
-    ///Inputed pin code value
+    ///Pin code that entered in text boxes
     public var pin: Int {
         get {
             var pin = ""
@@ -73,6 +73,7 @@ open class AuthField : UIView {
         set(newPin) {
             let pinArr = Array("\(newPin)")
             let count = pinArr.count
+            
             zip(pinArr, cards).enumerated().forEach { i, data in
                 let (pinCode, card) = data
                 card.textField.text = "\(pinCode)"
@@ -168,7 +169,6 @@ open class AuthField : UIView {
     internal let configuration: AuthFieldConfiguration
     
     //MARK: Private Properties
-    private var boundsObserver: NSKeyValueObservation!
     private lazy var stackView: UIStackView = {
         let stack = UIStackView()
         stack.axis = .horizontal

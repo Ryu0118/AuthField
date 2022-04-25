@@ -226,7 +226,7 @@ open class AuthField : UIView {
             }
             return
         }
-        
+        // set default value and add arranged subview to stackView
         for i in 0..<pinCount {
             let card = AuthCard(font: font)
             card.textField.isUserInteractionEnabled = i == 0
@@ -253,53 +253,68 @@ open class AuthField : UIView {
 
 extension AuthField : AuthCardDelegate {
     
+    //Called when you finish typing one character.
     func endEditing(_ authCard: AuthCard) {
         let index = authCard.tag
         let nextIndex = index + 1
         if let card = cards[safe: nextIndex] {
-            card.textField.isUserInteractionEnabled = true
-            card.textField.becomeFirstResponder()
-            authCard.textField.isUserInteractionEnabled = false
+            //selects the next card and disables the selection of the current card
+            card.select()
+            authCard.setUnselectable()
         }
         else if nextIndex == pinCount {
-            authCard.textField.isUserInteractionEnabled = true
+            //Only the last card can be selected when the last card is entered
+            authCard.setSelectable()
             delegate?.endEditing?(self, pinCode: pin)
         }
     }
     
+    //Called when a character in a TextField is erased.
     func didRemove(_ authCard: AuthCard, isRemoveNext: Bool) {
         let index = authCard.tag
         if let card = cards[safe: index - 1] {
+            // isRemoveNext is true when textField is empty
+            // if isRemoveNext is true, erase the next card letter.
             if isRemoveNext { card.textField.text = "" }
-            card.textField.isUserInteractionEnabled = true
-            card.textField.becomeFirstResponder()
-            authCard.textField.isUserInteractionEnabled = false
+            //selects the next card and disables the selection of the current card
+            card.select()
+            authCard.setUnselectable()
         }
         else if index == 0 {
-            authCard.textField.isUserInteractionEnabled = true
+            //Allow the user to select the first card when all have been erased.
+            authCard.setSelectable()
         }
     }
     
+    //Method called when a textField attempts to enter one or more characters
     func textFieldDidOverRange(_ authCard: AuthCard, remaining: String) {
         let index = authCard.tag
         let nextIndex = index + 1
 
         if let card = cards[safe: nextIndex] {
+            //Enter the characters left over from the previous Field into the next AuthCard.
             card.textField.text = remaining
-            authCard.textField.text?.removeLast()
-            card.textField.isUserInteractionEnabled = true
-            card.textField.becomeFirstResponder()
-            authCard.textField.isUserInteractionEnabled = false
             
+            //Delete excess characters in previous Field
+            authCard.textField.text?.removeLast()
+            
+            //selects the next card and deselects the previous card
+            card.select()
+            authCard.setUnselectable()
+            
+            //If the card was the last card, close the keyboard with the last card selected.
             if card.tag + 1 == pinCount {
                 card.textField.resignFirstResponder()
-                card.textField.isUserInteractionEnabled = true
+                card.setSelectable()
+                
                 delegate?.endEditing?(self, pinCode: pin)
             }
         }
+        //reinsert character
         else if nextIndex == pinCount {
-            authCard.textField.isUserInteractionEnabled = true
+            authCard.setSelectable()
             authCard.textField.text = remaining
+            
             delegate?.endEditing?(self, pinCode: pin)
         }
     }

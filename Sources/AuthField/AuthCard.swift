@@ -83,6 +83,19 @@ class AuthCard : UIView {
         self.selectedBorderWidth = width
     }
     
+    func select() {
+        textField.isUserInteractionEnabled = true
+        textField.becomeFirstResponder()
+    }
+    
+    func setSelectable() {
+        textField.isUserInteractionEnabled = true
+    }
+    
+    func setUnselectable() {
+        textField.isUserInteractionEnabled = false
+    }
+    
     private func setupView() {
         textField.addTarget(self, action: #selector(editingChanged), for: .editingChanged)
         textField.addTarget(self, action: #selector(startEditing), for: .editingDidBegin)

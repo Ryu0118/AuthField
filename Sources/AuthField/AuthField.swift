@@ -123,6 +123,7 @@ open class AuthField : UIView {
         }
     }
     
+    ///Whether to put a space in the middle or not
     public var isSpaceInTheMiddleEnabled: Bool = false {
         didSet {
             stackView.removeFromSuperview()
@@ -212,6 +213,7 @@ open class AuthField : UIView {
         addSubview(stackView)
         stackView.snp.makeConstraints { $0.edges.equalToSuperview() }
         
+        //if card is not empty (isSpaceInTheMiddleEnabled is true), put a space in the middle
         guard cards.isEmpty else {
             for (i, card) in cards.enumerated() {
                 if isSpaceInTheMiddleEnabled && pinCount % 2 == 0 && pinCount != 2 && i != pinCount - 1 {

@@ -123,6 +123,13 @@ open class AuthField : UIView {
         }
     }
     
+    public var isSpaceInTheMiddleEnabled: Bool = false {
+        didSet {
+            stackView.removeFromSuperview()
+            setupView()
+        }
+    }
+    
     //MARK: Internal Properties
     internal var cards = [AuthCard]()
     internal let configuration: AuthFieldConfiguration
@@ -137,9 +144,28 @@ open class AuthField : UIView {
         return stack
     }()
     
-    //MARK: Initializer
+    //MARK: Initializeres
     public init(frame: CGRect = .zero, configuration: AuthFieldConfiguration) {
         self.configuration = configuration
+        self.font = configuration.font
+        self.pinCount = configuration.pinCount
+        self.spacing = configuration.spacing
+        self.borderColor = configuration.borderColor
+        self.selectedBorderColor = configuration.selectedBorderColor
+        self.borderWidth = configuration.borderWidth
+        self.selectedBorderWidth = configuration.selectedBorderWidth
+        self.boxCornerRadius = configuration.boxCornerRadius
+        self.boxBackgroundColor = configuration.boxBackgroundColor
+        
+        AuthField.boxWidth = configuration.boxWidth
+        AuthField.boxHeight = configuration.boxHeight
+        
+        super.init(frame: frame)
+        setupView()
+    }
+    
+    public init(frame: CGRect = .zero, pinCount: Int) {
+        self.configuration = AuthFieldConfiguration(pinCount: pinCount)
         self.font = configuration.font
         self.pinCount = configuration.pinCount
         self.spacing = configuration.spacing
@@ -186,6 +212,19 @@ open class AuthField : UIView {
         addSubview(stackView)
         stackView.snp.makeConstraints { $0.edges.equalToSuperview() }
         
+        guard cards.isEmpty else {
+            for (i, card) in cards.enumerated() {
+                if isSpaceInTheMiddleEnabled && pinCount % 2 == 0 && pinCount != 2 && i != pinCount - 1 {
+                    if pinCount / 2 == i + 1 {
+                        stackView.setCustomSpacing(spacing + 9, after: card)
+                    }else{
+                        stackView.setCustomSpacing(spacing, after: card)
+                    }
+                }
+            }
+            return
+        }
+        
         for i in 0..<pinCount {
             let card = AuthCard(font: font)
             card.textField.isUserInteractionEnabled = i == 0
@@ -197,6 +236,14 @@ open class AuthField : UIView {
             card.delegate = self
             stackView.addArrangedSubview(card)
             cards.append(card)
+            
+            if isSpaceInTheMiddleEnabled && pinCount % 2 == 0 && pinCount != 2 && i != pinCount - 1 {
+                if pinCount / 2 == i + 1 {
+                    stackView.setCustomSpacing(spacing + 9, after: card)
+                }else{
+                    stackView.setCustomSpacing(spacing, after: card)
+                }
+            }
         }
     }
     

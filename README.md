@@ -33,3 +33,17 @@ authField.pin = 123456 // default pin code
 authField.isSpaceInTheMiddleEnabled = true // Put a space in the middle of the boxes.
 view.addSubview(authField) 
 ```
+
+### Delegation
+```Swift
+authField.delegate = self
+``` 
+Called when all pin codes have been entered
+```Swift 
+extension ViewController : AuthFieldDelegate {
+    func endEditing(_ authField: AuthField, pinCode: Int) {
+        print(pinCode)
+    }
+}
+```
+

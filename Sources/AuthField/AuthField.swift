@@ -208,8 +208,6 @@ open class AuthField : UIView {
     
     //MARK: Private Methods
     private func setupView() {
-        self.snp.makeConstraints { $0.height.equalTo(AuthField.boxHeight + 10) }
-        
         addSubview(stackView)
         stackView.snp.makeConstraints { $0.edges.equalToSuperview() }
         

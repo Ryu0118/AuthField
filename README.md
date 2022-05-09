@@ -26,10 +26,12 @@ let authFieldConfiguration = AuthFieldConfiguration(
     boxBackgroundColor: .white
 )
 let authField = AuthField(configuration: authFieldConfiguration)
-authField.pin = 123456 // default pin code
-authField.isSpaceInTheMiddleEnabled = true // Put a space in the middle of the boxes.
 view.addSubview(authField) 
 ```
+
+### properties
+authField.pin = 123456 // default pin code
+authField.isSpaceInTheMiddleEnabled = true // Put a space in the middle of the boxes.
 
 ### Delegation
 ```Swift

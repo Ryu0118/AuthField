@@ -30,8 +30,10 @@ view.addSubview(authField)
 ```
 
 ### properties
+```Swift
 authField.pin = 123456 // default pin code
 authField.isSpaceInTheMiddleEnabled = true // Put a space in the middle of the boxes.
+``` 
 
 ### Delegation
 ```Swift

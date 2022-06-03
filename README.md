@@ -1,9 +1,6 @@
 # AuthField
 AuthField is customizable pin code field.
 
-## Installation
-`pod 'AuthField'`
-
 ## Usage
 
 ```Swift

@@ -188,14 +188,12 @@ open class AuthField : UIView {
     //MARK: Public Methods
     @discardableResult
     public override func resignFirstResponder() -> Bool {
-        cards.last?.textField.resignFirstResponder()
-        return super.resignFirstResponder()
+        return cards.last?.textField.resignFirstResponder() ?? super.resignFirstResponder()
     }
     
     @discardableResult
     public override func becomeFirstResponder() -> Bool {
-        cards.first?.textField.becomeFirstResponder()
-        return super.becomeFirstResponder()
+        return cards.first?.textField.becomeFirstResponder() ?? super.becomeFirstResponder()
     }
     
     ///Delete all pin codes that have been entered

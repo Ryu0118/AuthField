@@ -1,5 +1,7 @@
 # AuthField
-AuthField is customizable pin code field.
+AuthField is customizable pin code field like apple 2-factor authentication
+
+![gif](https://user-images.githubusercontent.com/87907656/171995740-c527d8fe-fc5a-4938-b76d-644b051bc157.gif)
 
 ## Usage
 
